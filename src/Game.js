@@ -173,12 +173,13 @@ export default function App() {
 }, [currentIndex, gameStarted, elementsData.length,startNewRound]); 
 
 
-const startNewRound = () => {
+const startNewRound = useCallback(() => {
+    if (elementsData.length === 0) return;
     const currentElement = elementsData[currentIndex];
     const letters = shuffleArray([...currentElement.name.toUpperCase()]);
     setShuffledLetters(letters);
     setUserInput(new Array(letters.length).fill(" "));
-  };
+}, [elementsData, currentIndex]); //
 
   const handleLetterClick = (letter) => {
     const inputIndex = userInput.indexOf(" ");
