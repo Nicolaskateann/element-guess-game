@@ -239,7 +239,7 @@ export default function App() {
         <div className="welcome-container">
         <h1 className="welcome-title">ELEMENTOLOGY</h1>
         <p className="welcome-subtitle">
-            Elementology: A Gamified Learning Tool to Enhance Grade 8 Students’ Mastery and Familiarity with the Periodic Table of Elements
+            Elementology: A Gamified Learning Tool to Enhance Grade 8 Students Mastery and Familiarity with the Periodic Table of Elements
         </p>
         <p className="welcome-tagline">A world full of elements</p>
         </div>
