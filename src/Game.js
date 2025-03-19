@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCallback } from "react"; // Import useCallback
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
 import { FaTrash, FaCheck, FaLightbulb, FaHome } from "react-icons/fa";
@@ -163,18 +164,21 @@ export default function App() {
   
   
 
-  const startNewRound = () => {
-    const currentElement = elementsData[currentIndex];
-    const letters = shuffleArray([...currentElement.name.toUpperCase()]);
-    setShuffledLetters(letters);
-    setUserInput(new Array(letters.length).fill(" "));
-  };
+  
 
   useEffect(() => {
     if (gameStarted && elementsData.length > 0) {
         startNewRound();
     }
-}, [currentIndex, gameStarted, elementsData.length]); 
+}, [currentIndex, gameStarted, elementsData.length,startNewRound]); 
+
+
+const startNewRound = () => {
+    const currentElement = elementsData[currentIndex];
+    const letters = shuffleArray([...currentElement.name.toUpperCase()]);
+    setShuffledLetters(letters);
+    setUserInput(new Array(letters.length).fill(" "));
+  };
 
   const handleLetterClick = (letter) => {
     const inputIndex = userInput.indexOf(" ");
