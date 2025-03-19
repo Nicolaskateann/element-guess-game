@@ -161,9 +161,10 @@ export default function App() {
   const [hintsLeft, setHintsLeft] = useState(3);
 
   useEffect(() => {
-    if (gameStarted && elementsData.length > 0) startNewRound();
-  }, [currentIndex, gameStarted,  elementsData.length]); 
-
+    if (gameStarted && elementsData.length > 0) {
+        startNewRound();
+    }
+}, [currentIndex, gameStarted, elementsData.length]); 
   
 
   const startNewRound = () => {
