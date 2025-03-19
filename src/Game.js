@@ -232,9 +232,14 @@ export default function App() {
   if (!gameStarted) {
     return (
         <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
-        <h1 className="display-4 text-success">ELEMENTOLOGY</h1>
-        <p className="lead">Elementology: A Gamified Learning Tool to Enhance Grade 8 Students Mastery and Familiarity with the Periodic Table of Elements</p>
-        <p className="lead">A world full of elements</p>
+        
+        <div className="welcome-container">
+        <h1 className="welcome-title">ELEMENTOLOGY</h1>
+        <p className="welcome-subtitle">
+            Elementology: A Gamified Learning Tool to Enhance Grade 8 Students’ Mastery and Familiarity with the Periodic Table of Elements
+        </p>
+        <p className="welcome-tagline">A world full of elements</p>
+        </div>
 
         <div className="envelope-box">
           <div className="paper-message">
@@ -247,12 +252,20 @@ export default function App() {
             </p>
           </div>
         </div>
-        <p>Choose a category to start playing.</p>
-        {Object.keys(elementFamilies).map((fam) => (
-          <button className="btn btn-primary m-2" key={fam} onClick={() => { setCategory(fam); setElementsData(elementFamilies[fam]); setGameStarted(true); }}>
-            <FaAtom className="icon" />{fam}
-          </button>
-        ))}
+        <div className="category-container">
+        <p className="category-text">Choose 1 group of element you want to play.</p>
+        <div className="category-box">
+            {Object.keys(elementFamilies).map((fam) => (
+            <button className="category-button" key={fam} onClick={() => { 
+                setCategory(fam); 
+                setElementsData(elementFamilies[fam]); 
+                setGameStarted(true); 
+            }}>
+                <FaAtom className="icon" /> {fam}
+            </button>
+            ))}
+        </div>
+        </div>
       </div>
     );
   }

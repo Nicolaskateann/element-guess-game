@@ -19,7 +19,7 @@
   
   .container {
     max-width: 700px;
-    background: white;
+    background: #f4e4ba;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -39,7 +39,37 @@
     font-weight: bold;
   }
 
-
+  .welcome-container {
+    text-align: center;
+    background: #f4e4ba; 
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: auto;
+    border: 2px solid #ff1493;
+  }
+  
+  .welcome-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ff1493; 
+    text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.25rem;
+    color: #444;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+  
+  .welcome-tagline {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff1493; 
+    margin-top: 15px;
+  }
   /* Envelope and Message Styling */
 .envelope-box {
     position: relative;
@@ -94,7 +124,7 @@
     font-size: 2.5rem; /* Large text */
     font-weight: bold;
     color: #ff1493; /* Pink text */
-    background-color: #87ceeb; /* Skyblue background */
+    background-color: #f4e4ba; /* Skyblue background */
     padding: 20px 40px; /* Spacing inside */
     border-radius: 12px; /* Rounded edges */
     text-align: center;
@@ -106,5 +136,56 @@
   
   .element-box:hover {
     transform: scale(1.05); /* Slight hover effect */
+    box-shadow: 5px 8px 15px rgba(0, 0, 0, 0.3);
+  }
+
+
+  .category-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .category-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+  }
+  
+  .category-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: #f4e4ba; 
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .category-button {
+    background-color: whitesmoke;
+    color: palevioletred;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 20px;
+    margin: 10px;
+    border: 2px solid palevioletred;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .category-button .icon {
+    font-size: 1rem;
+  }
+  
+  .category-button:hover {
+    background-color: #f4e4ba;
+    transform: scale(1.1);
     box-shadow: 5px 8px 15px rgba(0, 0, 0, 0.3);
   }
