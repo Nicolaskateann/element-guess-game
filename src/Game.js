@@ -160,11 +160,7 @@ export default function App() {
   const [finalSubmitted, setFinalSubmitted] = useState(false);
   const [hintsLeft, setHintsLeft] = useState(3);
 
-  useEffect(() => {
-    if (gameStarted && elementsData.length > 0) {
-        startNewRound();
-    }
-}, [currentIndex, gameStarted, elementsData.length]); 
+  
   
 
   const startNewRound = () => {
@@ -173,6 +169,12 @@ export default function App() {
     setShuffledLetters(letters);
     setUserInput(new Array(letters.length).fill(" "));
   };
+
+  useEffect(() => {
+    if (gameStarted && elementsData.length > 0) {
+        startNewRound();
+    }
+}, [currentIndex, gameStarted, elementsData.length]); 
 
   const handleLetterClick = (letter) => {
     const inputIndex = userInput.indexOf(" ");
