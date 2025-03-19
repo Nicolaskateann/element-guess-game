@@ -1,0 +1,67 @@
+.container {
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  img {
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    font-size: 18px;
+  }
+  body {
+    background: url("https://as1.ftcdn.net/v2/jpg/09/05/99/04/1000_F_905990461_TyzSM2SNqJvYfGT6jKYDbGhKY06Ljp4X.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .container {
+    max-width: 700px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  h1.display-4 {
+    font-weight: bold;
+  }
+  
+  button {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+  }
+  
+  .final-score {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+
+  /* Envelope and Message Styling */
+.envelope-box {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    background: #f4e4ba;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    transform: rotate(-3deg);
+  }
+  
+  .paper-message {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transform: rotate(2deg);
+  }
