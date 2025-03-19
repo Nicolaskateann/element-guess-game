@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback  } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
@@ -149,169 +149,174 @@ const elementFamilies = {
 const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
 export default function App() {
-  const [category, setCategory] = useState(null);
-  const [elementsData, setElementsData] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [shuffledLetters, setShuffledLetters] = useState([]);
-  const [userInput, setUserInput] = useState([]);
-  const [score, setScore] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [finalSubmitted, setFinalSubmitted] = useState(false);
-  const [hintsLeft, setHintsLeft] = useState(3);
-
-  useEffect(() => {
-    if (gameStarted && elementsData.length > 0) startNewRound();
-  }, [currentIndex, gameStarted]);
-
-  const startNewRound = () => {
-    const currentElement = elementsData[currentIndex];
-    const letters = shuffleArray([...currentElement.name.toUpperCase()]);
-    setShuffledLetters(letters);
-    setUserInput(new Array(letters.length).fill(" "));
-  };
-
-  const handleLetterClick = (letter) => {
-    const inputIndex = userInput.indexOf(" ");
-    if (inputIndex !== -1) {
-      const newInput = [...userInput];
-      newInput[inputIndex] = letter;
-      setUserInput(newInput);
-    }
-  };
-
-  const handleDelete = () => {
-    const newInput = [...userInput];
-    for (let i = newInput.length - 1; i >= 0; i--) {
-      if (newInput[i] !== " ") {
-        newInput[i] = " ";
-        break;
+    const [category, setCategory] = useState(null);
+    const [elementsData, setElementsData] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [shuffledLetters, setShuffledLetters] = useState([]);
+    const [userInput, setUserInput] = useState([]);
+    const [score, setScore] = useState(0);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [gameOver, setGameOver] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [finalSubmitted, setFinalSubmitted] = useState(false);
+    const [hintsLeft, setHintsLeft] = useState(3);
+  
+    // ✅ Fix: Use useCallback to prevent unnecessary re-renders
+    const startNewRound = useCallback(() => {
+      if (elementsData.length === 0) return;
+      const currentElement = elementsData[currentIndex];
+      const letters = shuffleArray([...currentElement.name.toUpperCase()]);
+      setShuffledLetters(letters);
+      setUserInput(new Array(letters.length).fill(" "));
+    }, [elementsData, currentIndex]);
+  
+    // ✅ Fix: Include 'elementsData.length' & 'startNewRound' in dependencies
+    useEffect(() => {
+      if (gameStarted && elementsData.length > 0) {
+        startNewRound();
       }
-    }
-    setUserInput(newInput);
-  };
-
-  const handleHint = () => {
-    if (hintsLeft > 0) {
-      const correctAnswer = elementsData[currentIndex].name.toUpperCase();
+    }, [elementsData.length, startNewRound]); // ✅ Fix applied here
+  
+    const handleLetterClick = (letter) => {
+      const inputIndex = userInput.indexOf(" ");
+      if (inputIndex !== -1) {
+        const newInput = [...userInput];
+        newInput[inputIndex] = letter;
+        setUserInput(newInput);
+      }
+    };
+  
+    const handleDelete = () => {
       const newInput = [...userInput];
-      for (let i = 0; i < correctAnswer.length; i++) {
-        if (newInput[i] === " ") {
-          newInput[i] = correctAnswer[i];
-          setHintsLeft(hintsLeft - 1);
+      for (let i = newInput.length - 1; i >= 0; i--) {
+        if (newInput[i] !== " ") {
+          newInput[i] = " ";
           break;
         }
       }
       setUserInput(newInput);
-    }
-  };
-
-  const checkAnswer = () => {
-    if (userInput.join("") === elementsData[currentIndex].name.toUpperCase()) {
-      setScore(score + 1);
-    }
-    if (currentIndex + 1 < elementsData.length) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setGameOver(true);
-    }
-  };
-
-  const restartGame = () => {
-    setCategory(null);
-    setElementsData([]);
-    setCurrentIndex(0);
-    setScore(0);
-    setGameStarted(false);
-    setGameOver(false);
-    setUserName("");
-    setFinalSubmitted(false);
-    setHintsLeft(3);
-  };
-
-  if (!gameStarted) {
-    return (
-      <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
-        <h1 className="display-4 text-success">ELEMENTOLOGY</h1>
-        <p className="lead">Elementology: A Gamified Learning Tool to Enhance Grade 8 Students Mastery and Familiarity with the Periodic Table of Elements</p>
-        <p className="lead">A world full of elements</p>
-
-        <div className="envelope-box">
-          <div className="paper-message">
-            <p>
-              Hello, Grade 8! Let us dive into the world full of elements! Imagine 118 unique superheroes, each with its own incredible powers, working together in the grand science adventure of the periodic table! These elements are like building blocks of everything around us, each one playing a crucial role in the universe’s endless story.
-              <br /> <br />
-              So, gear up and get ready to unlock the secrets of the 118 elements—because with these heroes in our scientific world, we are about to discover a whole new world!
-              <br /> <br />
-              <strong>ARE YOU READYYYYYYY!?!?!?!?!</strong>
+    };
+  
+    const handleHint = () => {
+      if (hintsLeft > 0) {
+        const correctAnswer = elementsData[currentIndex].name.toUpperCase();
+        const newInput = [...userInput];
+        for (let i = 0; i < correctAnswer.length; i++) {
+          if (newInput[i] === " ") {
+            newInput[i] = correctAnswer[i];
+            setHintsLeft(hintsLeft - 1);
+            break;
+          }
+        }
+        setUserInput(newInput);
+      }
+    };
+  
+    const checkAnswer = () => {
+      if (userInput.join("") === elementsData[currentIndex].name.toUpperCase()) {
+        setScore(score + 1);
+      }
+      if (currentIndex + 1 < elementsData.length) {
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        setGameOver(true);
+      }
+    };
+  
+    const restartGame = () => {
+      setCategory(null);
+      setElementsData([]);
+      setCurrentIndex(0);
+      setScore(0);
+      setGameStarted(false);
+      setGameOver(false);
+      setUserName("");
+      setFinalSubmitted(false);
+      setHintsLeft(3);
+    };
+  
+    if (!gameStarted) {
+      return (
+        <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
+          <div className="welcome-container">
+            <h1 className="welcome-title">ELEMENTOLOGY</h1>
+            <p className="welcome-subtitle">
+              A Gamified Learning Tool to Enhance Grade 8 Students' Mastery and Familiarity with the Periodic Table of Elements
             </p>
+            <p className="welcome-tagline">A world full of elements</p>
+          </div>
+  
+          <div className="category-container">
+            <p className="category-text">Choose 1 group of elements you want to play.</p>
+            <div className="category-box">
+              {Object.keys(elementFamilies).map((fam) => (
+                <button className="category-button" key={fam} onClick={() => {
+                  setCategory(fam);
+                  setElementsData(elementFamilies[fam]);
+                  setGameStarted(true);
+                }}>
+                   {fam}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-        <p>Choose a category to start playing.</p>
-        {Object.keys(elementFamilies).map((fam) => (
-          <button className="btn btn-primary m-2" key={fam} onClick={() => { setCategory(fam); setElementsData(elementFamilies[fam]); setGameStarted(true); }}>
-            {fam}
-          </button>
-        ))}
-      </div>
-    );
-  }
-
-  if (gameOver && !finalSubmitted) {
+      );
+    }
+  
+    if (gameOver && !finalSubmitted) {
+      return (
+        <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
+          <h1 className="display-4 text-success">Thank you for Playing</h1>
+          <p className="lead">Enter your name to see your score:</p>
+          <input type="text" className="form-control w-50 mx-auto text-center shadow-sm" 
+            value={userName} onChange={(e) => setUserName(e.target.value)} 
+            placeholder="Your Name" />
+          <button className="btn btn-success mt-3 shadow" onClick={() => setFinalSubmitted(true)}>Submit</button>
+        </div>
+      );
+    }
+  
+    if (finalSubmitted) {
+      return (
+        <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
+          <h1 className="display-4 text-success">{score >= 3 ? "Congratulations!" : "Try Again!"}</h1>
+          <p className="lead">{userName}, your score is {score}.</p>
+          <button className="btn btn-primary shadow" onClick={restartGame}>Play Again</button>
+        </div>
+      );
+    }
+  
     return (
-      <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
-        <h1 className="display-4 text-success">Thank you for Playing</h1>
-        <p className="lead">Enter your name to see your score:</p>
-        <input type="text" className="form-control w-50 mx-auto text-center shadow-sm" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Your Name" />
-        <button className="btn btn-success mt-3 shadow" onClick={() => setFinalSubmitted(true)}>Submit</button>
+      <div className="container text-center mt-5 border rounded shadow">
+        <h1> {category}</h1>
+        <p>Score: {score} | Hints Left: {hintsLeft}</p>
+        <h1 className="element-box">{elementsData[currentIndex].symbol}</h1>
+        <div className="mt-3">
+          {userInput.map((char, index) => (
+            <span key={index} className="answer-box">{char}</span>
+          ))}
+        </div>
+        <div className="mt-3">
+          {shuffledLetters.map((letter, index) => (
+            <button key={index} className="btn btn-primary mx-1" onClick={() => handleLetterClick(letter)}>
+              {letter}
+            </button>
+          ))}
+        </div>
+  
+        <button className="btn custom-btn btn-danger mt-3 mx-2" onClick={handleDelete}>
+          <FaTrash className="icon" /> Delete
+        </button>
+        <button className="btn custom-btn btn-success mt-3 mx-2" onClick={checkAnswer}>
+          <FaCheck className="icon" /> Submit
+        </button>
+        <button className="btn custom-btn btn-warning mt-3 mx-2" onClick={handleHint} disabled={hintsLeft === 0}>
+          <FaLightbulb className="icon" /> Hint ({hintsLeft})
+        </button>
+        <button className="btn custom-btn btn-secondary mt-3 mx-2" onClick={restartGame}>
+          <FaHome className="icon" /> Home
+        </button>
       </div>
     );
   }
-
-  if (finalSubmitted) {
-    return (
-      <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
-        <h1 className="display-4 text-success">{score >= 3 ? "Congratulations!" : "Try Again!"}</h1>
-        <p className="lead">{userName}, your score is {score}.</p>
-        <button className="btn btn-primary shadow" onClick={restartGame}>Play Again</button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container text-center mt-5">
-      <h1>Guess the Element - {category}</h1>
-      <p>Score: {score} | Hints Left: {hintsLeft}</p>
-      <h2>{elementsData[currentIndex].symbol}</h2>
-      <div className="mt-3">
-        {userInput.map((char, index) => (
-          <span key={index} className="answer-box">{char}</span>
-        ))}
-      </div>
-      <div className="mt-3">
-        {shuffledLetters.map((letter, index) => (
-          <button key={index} className="btn btn-primary mx-1" onClick={() => handleLetterClick(letter)}>
-            {letter}
-          </button>
-        ))}
-      </div>
-     <button className="btn custom-btn btn-danger mt-3 mx-2" onClick={handleDelete}>
-  <FaTrash className="icon" /> Delete
-</button>
-
-<button className="btn custom-btn btn-success mt-3 mx-2" onClick={checkAnswer}>
-  <FaCheck className="icon" /> Submit
-</button>
-
-<button className="btn custom-btn btn-warning mt-3 mx-2" onClick={handleHint} disabled={hintsLeft === 0}>
-  <FaLightbulb className="icon" /> Hint ({hintsLeft})
-</button>
-
-<button className="btn custom-btn btn-secondary mt-3 mx-2" onClick={restartGame}>
-  <FaHome className="icon" /> Home
-</button>
-
-    </div>
-  );
-}
