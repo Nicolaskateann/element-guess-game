@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
+import { FaTrash, FaCheck, FaLightbulb, FaHome } from "react-icons/fa";
+import { FaAtom } from "react-icons/fa"; // Import an icon
 
 const elementFamilies = {
  "Alkali Metals": [
@@ -248,7 +250,7 @@ export default function App() {
         <p>Choose a category to start playing.</p>
         {Object.keys(elementFamilies).map((fam) => (
           <button className="btn btn-primary m-2" key={fam} onClick={() => { setCategory(fam); setElementsData(elementFamilies[fam]); setGameStarted(true); }}>
-            {fam}
+            <FaAtom className="icon" />{fam}
           </button>
         ))}
       </div>
@@ -277,13 +279,13 @@ export default function App() {
   }
 
   return (
-    <div className="container text-center mt-5">
-      <h1>Guess the Element - {category}</h1>
+    <div className="container text-center mt-5  border rounded shadow">
+      <h1> {category}</h1>
       <p>Score: {score} | Hints Left: {hintsLeft}</p>
-      <h2>{elementsData[currentIndex].symbol}</h2>
+      <h1 className="element-box">{elementsData[currentIndex].symbol}</h1>
       <div className="mt-3">
         {userInput.map((char, index) => (
-          <span key={index} className="border px-3 py-2 mx-1 d-inline-block">{char}</span>
+          <span key={index} className="answer-box">{char}</span>
         ))}
       </div>
       <div className="mt-3">
@@ -293,10 +295,22 @@ export default function App() {
           </button>
         ))}
       </div>
-      <button className="btn btn-danger mt-3 mx-2" onClick={handleDelete}>Delete</button>
-      <button className="btn btn-success mt-3 mx-2" onClick={checkAnswer}>Submit</button>
-      <button className="btn btn-warning mt-3 mx-2" onClick={handleHint} disabled={hintsLeft === 0}>Hint ({hintsLeft})</button>
-      <button className="btn btn-secondary mt-3 mx-2" onClick={restartGame}>Home</button>
+        <button className="btn custom-btn btn-danger mt-3 mx-2" onClick={handleDelete}>
+        <FaTrash className="icon" /> Delete
+        </button>
+
+        <button className="btn custom-btn btn-success mt-3 mx-2" onClick={checkAnswer}>
+        <FaCheck className="icon" /> Submit
+        </button>
+
+        <button className="btn custom-btn btn-warning mt-3 mx-2" onClick={handleHint} disabled={hintsLeft === 0}>
+        <FaLightbulb className="icon" /> Hint ({hintsLeft})
+        </button>
+
+        <button className="btn custom-btn btn-secondary mt-3 mx-2" onClick={restartGame}>
+        <FaHome className="icon" /> Home
+        </button>
+
     </div>
   );
 }
