@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useCallback } from "react"; // Import useCallback
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
 import { FaTrash, FaCheck, FaLightbulb, FaHome } from "react-icons/fa";
-import { FaAtom } from "react-icons/fa"; // Import an icon
+
 
 const elementFamilies = {
  "Alkali Metals": [
@@ -161,25 +161,16 @@ export default function App() {
   const [finalSubmitted, setFinalSubmitted] = useState(false);
   const [hintsLeft, setHintsLeft] = useState(3);
 
-  
-  
-
-  
-
   useEffect(() => {
-    if (gameStarted && elementsData.length > 0) {
-        startNewRound();
-    }
-}, [currentIndex, gameStarted, elementsData.length]); 
+    if (gameStarted && elementsData.length > 0) startNewRound();
+  }, [currentIndex, gameStarted]);
 
-
-const startNewRound = useCallback(() => {
-    if (elementsData.length === 0) return;
+  const startNewRound = () => {
     const currentElement = elementsData[currentIndex];
     const letters = shuffleArray([...currentElement.name.toUpperCase()]);
     setShuffledLetters(letters);
     setUserInput(new Array(letters.length).fill(" "));
-}, [elementsData, currentIndex]); //
+  };
 
   const handleLetterClick = (letter) => {
     const inputIndex = userInput.indexOf(" ");
@@ -241,15 +232,10 @@ const startNewRound = useCallback(() => {
 
   if (!gameStarted) {
     return (
-        <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
-        
-        <div className="welcome-container">
-        <h1 className="welcome-title">ELEMENTOLOGY</h1>
-        <p className="welcome-subtitle">
-            Elementology: A Gamified Learning Tool to Enhance Grade 8 Students Mastery and Familiarity with the Periodic Table of Elements
-        </p>
-        <p className="welcome-tagline">A world full of elements</p>
-        </div>
+      <div className="container text-center mt-5 p-5 bg-light border rounded shadow">
+        <h1 className="display-4 text-success">ELEMENTOLOGY</h1>
+        <p className="lead">Elementology: A Gamified Learning Tool to Enhance Grade 8 Students Mastery and Familiarity with the Periodic Table of Elements</p>
+        <p className="lead">A world full of elements</p>
 
         <div className="envelope-box">
           <div className="paper-message">
@@ -262,20 +248,12 @@ const startNewRound = useCallback(() => {
             </p>
           </div>
         </div>
-        <div className="category-container">
-        <p className="category-text">Choose 1 group of element you want to play.</p>
-        <div className="category-box">
-            {Object.keys(elementFamilies).map((fam) => (
-            <button className="category-button" key={fam} onClick={() => { 
-                setCategory(fam); 
-                setElementsData(elementFamilies[fam]); 
-                setGameStarted(true); 
-            }}>
-                <FaAtom className="icon" /> {fam}
-            </button>
-            ))}
-        </div>
-        </div>
+        <p>Choose a category to start playing.</p>
+        {Object.keys(elementFamilies).map((fam) => (
+          <button className="btn btn-primary m-2" key={fam} onClick={() => { setCategory(fam); setElementsData(elementFamilies[fam]); setGameStarted(true); }}>
+            {fam}
+          </button>
+        ))}
       </div>
     );
   }
@@ -302,10 +280,10 @@ const startNewRound = useCallback(() => {
   }
 
   return (
-    <div className="container text-center mt-5  border rounded shadow">
-      <h1> {category}</h1>
+    <div className="container text-center mt-5">
+      <h1>Guess the Element - {category}</h1>
       <p>Score: {score} | Hints Left: {hintsLeft}</p>
-      <h1 className="element-box">{elementsData[currentIndex].symbol}</h1>
+      <h2>{elementsData[currentIndex].symbol}</h2>
       <div className="mt-3">
         {userInput.map((char, index) => (
           <span key={index} className="answer-box">{char}</span>
@@ -318,21 +296,21 @@ const startNewRound = useCallback(() => {
           </button>
         ))}
       </div>
-        <button className="btn custom-btn btn-danger mt-3 mx-2" onClick={handleDelete}>
-        <FaTrash className="icon" /> Delete
-        </button>
+     <button className="btn custom-btn btn-danger mt-3 mx-2" onClick={handleDelete}>
+  <FaTrash className="icon" /> Delete
+</button>
 
-        <button className="btn custom-btn btn-success mt-3 mx-2" onClick={checkAnswer}>
-        <FaCheck className="icon" /> Submit
-        </button>
+<button className="btn custom-btn btn-success mt-3 mx-2" onClick={checkAnswer}>
+  <FaCheck className="icon" /> Submit
+</button>
 
-        <button className="btn custom-btn btn-warning mt-3 mx-2" onClick={handleHint} disabled={hintsLeft === 0}>
-        <FaLightbulb className="icon" /> Hint ({hintsLeft})
-        </button>
+<button className="btn custom-btn btn-warning mt-3 mx-2" onClick={handleHint} disabled={hintsLeft === 0}>
+  <FaLightbulb className="icon" /> Hint ({hintsLeft})
+</button>
 
-        <button className="btn custom-btn btn-secondary mt-3 mx-2" onClick={restartGame}>
-        <FaHome className="icon" /> Home
-        </button>
+<button className="btn custom-btn btn-secondary mt-3 mx-2" onClick={restartGame}>
+  <FaHome className="icon" /> Home
+</button>
 
     </div>
   );
