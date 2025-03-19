@@ -170,7 +170,7 @@ export default function App() {
     if (gameStarted && elementsData.length > 0) {
         startNewRound();
     }
-}, [currentIndex, gameStarted, elementsData.length,startNewRound]); 
+}, [currentIndex, gameStarted, elementsData.length]); 
 
 
 const startNewRound = useCallback(() => {
