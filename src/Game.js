@@ -162,7 +162,9 @@ export default function App() {
 
   useEffect(() => {
     if (gameStarted && elementsData.length > 0) startNewRound();
-  }, [currentIndex, gameStarted]);
+  }, [currentIndex, gameStarted,  elementsData.length]); 
+
+  
 
   const startNewRound = () => {
     const currentElement = elementsData[currentIndex];
